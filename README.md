@@ -1,6 +1,6 @@
 # BBCTest
 
-#compile/run?
+#compile and run instructions :- 
 
 Clone the current repository or download the zip file	
 
