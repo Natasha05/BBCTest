@@ -1,33 +1,29 @@
 import java.util.Random;
-import java.util.concurrent.ForkJoinPool;
 
 public class CountMeUp{
 
-    // multi-threading field
-    private static final ForkJoinPool threadPool = new ForkJoinPool();
-
-    // essential fields
+    //Number of candidates 
     private int candidates;
 
-    // calculations from random user creation.
+    // Variables for vote calculation
     private int totalvotes;
     private int[] candidateVotes;
     private int[] candidateVotesUpdated;
+    private static final int voteAllowed = 3;
 
-    // misc fields.
+    // Random number generator
     public Random rand = new Random();
 
     /**
-     * Class constructor which takes an input amount of candidates.
-     * Initialises all collections without adding any element to them.
-     * Call generateUsers to add generate users - may it be a fixed amount
-     * (by setting min to the same value than max) or a random amount of users.
-     * @param candidatesIn
+     * Class constructor
+     * Input - number of candidates.
+     * Initializes all private fields 
+     * @param candidatesNumber
      */
-    public CountMeUp(int candidatesIn){
+    public CountMeUp(int candidatesNumber){
 
      totalvotes = 0;
-     candidates = candidatesIn;
+     candidates = candidatesNumber;
      candidateVotes = new int[candidates];
      candidateVotesUpdated = new int[candidates];
     }
@@ -38,26 +34,22 @@ public class CountMeUp{
     }
 
     public void generateUsers( Random rand, int min, int max){
-        // generates a random amount of users.
-        //intialises allUsers, totalvotes and candidateVotes.
+        // generates number of viewers.
+        int numberOfViewers = randomNumberBetweenRange(rand,min,max);
 
-        int randomnumberofusers = randomNumberBetweenRange(rand,min,max);
-
-        for(int i = 0; i < randomnumberofusers ; ++i){
-            User user = new User(rand,candidates);
-            totalvotes += user.vote.length;
-            for(int j = 0; j < user.vote.length; ++j){
-                ++candidateVotes[user.vote[j]-1];
-                if(j<4){
-                    ++candidateVotesUpdated[user.vote[j]-1];
+        for(int i = 0; i < numberOfViewers ; ++i){
+        	Viewer viewer = new Viewer(rand,candidates);
+            totalvotes += viewer.vote.length;
+            for(int j = 0; j < viewer.vote.length; ++j){
+                ++candidateVotes[viewer.vote[j]-1];
+                if(j <= voteAllowed){
+                    ++candidateVotesUpdated[viewer.vote[j]-1];
                 }
             }
         }
     }
 
     public void printPartition(){
-        // prints percentages before removing non-valid votes.
-
         System.out.println("total votes: " + totalvotes);
 
         System.out.println("| candidate          | percentage |");
@@ -70,8 +62,7 @@ public class CountMeUp{
     }
 
     public void printNumberOfVotesPerCandidate(){
-        // updates and prints number of votes after removing non-valid votes.
-
+        // update and print number of votes 
         System.out.println("total votes: " + totalvotes);
 
         System.out.println("| candidate          |    count     |");
