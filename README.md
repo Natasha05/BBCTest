@@ -1,4 +1,4 @@
-# BBCTest
+# Count number of viewers and generate a report
 
 #compile and run instructions :- 
 
